@@ -1,14 +1,8 @@
 import random
 import sys
 
+
 # Задача 1
-
-vowels = ['а', 'о', 'у', 'э', 'ы', 'е', 'ё', 'ю', 'я']
-consonant = ['б', 'в', 'г', 'д', 'ж', 'з', 'й', 'к', 'л', 'м', 'н',
-             'п', 'р', 'с', 'т', 'ф', 'х', 'ц', 'ч', 'ш', 'щ']
-names = open('C:/Users/Home/Downloads/male_names_rus.txt', 'r', encoding='utf-8').read().splitlines()
-
-
 def first(s):
     return [int(elem) for elem in s]
 
@@ -165,9 +159,61 @@ def generate_surnames():
 # sys.stdout.write(myprint({'first': 1, 'second': 2}, 'Hello World!', 123, 'H', 0.565, sep='\n'))
 
 
-def surnames_generator(m):
+# Задача 12. Замена кавычек в markdown файле
+def change_markdown():
+    # Считать файл как целую строку
+    with open('readme.md', 'r', encoding = 'utf-8') as f:
+        str = f.read()
+    flag = True
+    for i in range(len(str)):
+        if str[i] == '"' and flag == True:
+            str = str.replace('"', '«', 1)
+            flag = False
+        elif str[i] == '"' and flag == False:
+            str = str.replace('"', '»', 1)
+            flag = True
+        else:
+            continue
+    # Записать новую информацию в файл
+    with open("readme.md", 'w', encoding='utf-8') as f:
+        f.write(str)
+    return True
+
+
+def random_something(name_of_file):
+    with open(name_of_file, 'r', encoding='utf-8') as f:
+        lines =[]
+        for line in f:
+            lines.append(line)
+        random_profession = random.choice([line.rstrip() for line in lines])
+    return random_profession
+
+
+# Задача 8. Генератор фамилий
+def generate_surnames(number_of_names = 10):
     surname = ''
-    while m != 0:
-        for j in range(random.randint(6, 12)):
-            if j % 2 == 0:
-                surname =
+    ending = ['ов', 'ев', 'ин', 'ых', 'ой']
+    for i in range(number_of_names):
+        name = random_something('names.txt')
+        profession = random_something('profession.txt')
+        property = random_something('properties.txt')
+        quality = random_something('qualities.txt')
+        rand = random.choice([name, profession, property, quality])
+        if rand == profession:
+            surname = rand + ending[0] + ' ' + random_something('names.txt') + ' ' + \
+                      random_something('alphabet.txt') + '.'
+        elif rand == property:
+            surname = rand[:-2] + ending[3] + ' ' + random_something('names.txt') + ' ' + \
+                      random_something('alphabet.txt') + '.'
+        elif rand == quality:
+            surname = rand + ending[4] + ' ' + random_something('names.txt') + ' ' + \
+                      random_something('alphabet.txt') + '.'
+        else:
+            surname = rand + ending[random.randint(0, len(ending) - 3)] + ' ' + random_something('names.txt') + ' ' + \
+                      random_something('alphabet.txt') + '.'
+        yield surname
+
+
+# Проверка
+for i in generate_surnames(20):
+    print(i)
