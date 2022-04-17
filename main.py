@@ -23,22 +23,22 @@ def delete_empty_rows(x): # Удаление пустых строк
     while i != n:
         if x[i][0] is None:
             x.pop(i)
+            i -= 1
             n -= 1
         i += 1
     return x
 
 
 def convert_date(x): # Преобразование данных в таблице
-    n = len(x)
-    for i in range(n):
-        for j in range(n):
+    for i in range(len(x)):
+        for j in range(len(x[i])):
             if j == 0:
                 x[i][j] = re.search(r'\w+\.\w+', x[i][j]).group()
             elif j == 1:
                 if x[i][j] == 'N':
-                    x[i][j] = 0
+                    x[i][j] = '0'
                 else:
-                    x[i][j] = 1
+                    x[i][j] = '1'
             else:
                 result = x[i][j].split(sep = '/')[::-1]
                 x[i][j] = '.'.join(result)
