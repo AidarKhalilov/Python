@@ -1,5 +1,7 @@
+import itertools
 import random
 import sys
+from itertools import groupby
 
 
 # Задача 1
@@ -156,8 +158,7 @@ def generate_surnames():
 # False
 
 # Задача 6. Реализуйте функцию print()
-# sys.stdout.write(myprint({'first': 1, 'second': 2}, 'Hello World!', 123, 'H', 0.565, sep='\n'))
-
+sys.stdout.write(myprint({'first': 1, 'second': 2}, 'Hello World!', 123, 'H', 0.565, sep=''))
 
 # Задача 12. Замена кавычек в markdown файле
 def change_markdown():
@@ -174,6 +175,7 @@ def change_markdown():
             flag = True
         else:
             continue
+
     # Записать новую информацию в файл
     with open("readme.md", 'w', encoding='utf-8') as f:
         f.write(str)
@@ -214,6 +216,41 @@ def generate_surnames(number_of_names = 10):
         yield surname
 
 
-# Проверка
-for i in generate_surnames(20):
-    print(i)
+# Задача 11. Преобразования Барроуза-Уиллера
+def bwt(data):
+    result = ''
+    sorted_list = sorted(cycle_permutations(data))
+    n = len(data)
+    for i in range(n):
+        result += sorted_list[i][n - 1]
+        if sorted_list[i] == data:
+            number_in_list = i
+    return result, number_in_list
+
+
+# Обратное преобразование
+def inverse_bwt(tuple):
+    result = [i for i in sorted(tuple[0])]
+    n = len(tuple[0])
+    for i in range(n - 1):
+        for j in range(n):
+            result[j] = tuple[0][j] + result[j]
+        result = sorted(result)
+    return result[tuple[1]]
+
+
+# Циклические перестановки для задачи 11
+def cycle_permutations(data):
+    result = [data]
+    for i in range(len(data) - 1):
+        data = data[1:] + data[0]
+        result.append(data)
+    return result
+
+
+def rle_encode(data):
+    return [(k, len(list(g))) for k, g in groupby(data)]
+
+
+print(rle_encode('абракадабра'))
+print(inverse_bwt(bwt('абракадабра')))
