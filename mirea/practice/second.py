@@ -1,5 +1,6 @@
 import itertools
 import random
+import re
 import sys
 from itertools import groupby
 
@@ -254,3 +255,4 @@ def rle_encode(data):
 
 print(rle_encode('абракадабра'))
 print(inverse_bwt(bwt('абракадабра')))
+

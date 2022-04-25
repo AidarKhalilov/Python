@@ -1,70 +1,21 @@
 import re
 
 
-def delete_rows(x): # Удаление дублей среди строк
-    i = 0
-    n = len(x)
-    while i != n:
-        current_value = x[i][0]
-        j = i + 1
-        while j != n:
-            if x[j][0] == current_value:
-                x.pop(j)
-                j -= 1
-                n -= 1
-            j += 1
-        i += 1
-    return x
+def parse_value(x):
+    return re.findall(r"\w+", x)
 
 
-def delete_empty_rows(x): # Удаление пустых строк
-    i = 0
-    n = len(x)
-    while i != n:
-        if x[i][0] is None:
-            x.pop(i)
-            i -= 1
-            n -= 1
-        i += 1
-    return x
-
-
-def convert_date(x): # Преобразование данных в таблице
-    for i in range(len(x)):
-        for j in range(len(x[i])):
-            if j == 0:
-                x[i][j] = re.search(r'\w+\.\w+', x[i][j]).group()
-            elif j == 1:
-                if x[i][j] == 'N':
-                    x[i][j] = '0'
-                else:
-                    x[i][j] = '1'
-            else:
-                result = x[i][j].split(sep = '/')[::-1]
-                x[i][j] = '.'.join(result)
-    return x
-
-
-def transpose(x): # Транспонирование таблицы
-    result = []
-    for i in range(len(x[0])):
-        result.append([])
-        for j in range(len(x)):
-            result[i].append(x[j][i])
+def parse(x):
+    result = {}
+    keys = re.findall(r'(?<=var\s)\w+', x)
+    values = re.findall(r'(?<=array\()[^)]+', x)
+    keys_values = []
+    for i in range(len(keys)):
+        result[keys[i]] = parse_value(values[i])
     return result
 
 
-def main(x):
-    x = delete_rows(x)
-    x = delete_empty_rows(x)
-    x = convert_date(x)
-    x = transpose(x)
-    return x
-
-
-print(main([['redivide6[at]yandex.ru', 'N', '04/04/08'],
-                   ['redis7[at]mail.ru', 'Y', '99/04/16'],
-                   [None, None, None],
-                   ['limberer58[at]yahoo.com', 'N', '99/12/24'],
-                   ['limberer58[at]yahoo.com', 'N', '99/12/24'],
-                   ['limberer58[at]yahoo.com', 'N', '99/12/24']]))
+print(parse("begin(( var xeza<==array( @'rige' . @'orus' . @'ries_278' ). ))."
+            "((var bibe_339<== array(@'inatat_92' . @'geon_269' . @'tiveso'.@'male'). "
+            ")).(( var zaer <== array( @'maendi_298' . @'arte_937' .@'rigedi_817'). "
+            ")). end"))
