@@ -160,6 +160,7 @@ def generate_surnames():
 
 # Задача 6. Реализуйте функцию print()
 sys.stdout.write(myprint({'first': 1, 'second': 2}, 'Hello World!', 123, 'H', 0.565, sep=''))
+print('')
 
 # Задача 12. Замена кавычек в markdown файле
 def change_markdown():
@@ -256,3 +257,64 @@ def rle_encode(data):
 print(rle_encode('абракадабра'))
 print(inverse_bwt(bwt('абракадабра')))
 
+
+# Задача 10. Интеллектуальный разбор
+def parse_subj(text):
+    parse_group = re.search(r'[КВНМквнмkvbnKVBN](?=[Бб])|[КВНМквнмkvbnKVBN](?=[\s_-]*\d)', text)
+    group = ''
+    number = ''
+    variant = ''
+    if parse_group is not None:
+        match(parse_group.group()):
+            case 'к': group = 'ИКБО'
+            case 'н': group = 'ИНБО'
+            case 'в': group = 'ИВБО'
+            case 'м': group = 'ИМБО'
+            case 'k': group = 'ИКБО'
+            case 'v': group = 'ИВБО'
+            case 'm': group = 'ИМБО'
+            case 'n': group = 'ИНБО'
+            case 'К': group = 'ИКБО'
+            case 'В': group = 'ИВБО'
+            case 'Н': group = 'ИНБО'
+            case 'М': group = 'ИМБО'
+            case 'K': group = 'ИКБО'
+            case 'B': group = 'ИВБО'
+            case 'V': group = 'ИВБО'
+            case 'M': group = 'ИМБО'
+            case 'N': group = 'ИНБО'
+    parse_number = re.search(r'(?<=[КМНВкмнвkvnmKVBNM])\d{1,2}|(?<=И[КМНВкмнвkvnmKVNM]БО-)\d{1,2}|'
+                             r'(?<=[КМНВкмнвkvnmKVNM]\s)\d{1,2}|(?<=[КМНВкмнвkvnmKVNM]-)\d{1,2}', text)
+    if parse_number is not None:
+        if len(parse_number.group()) == 1:
+            number = '-0' + parse_number.group() + '-20'
+        else:
+            number = '-' + parse_number.group() + '-20'
+    parse_variant = re.search(r'\d{1,2}$', text)
+    if parse_variant is not None:
+        variant = parse_variant.group()
+    if group != '' and number != '' and variant != '':
+        return group + number + '. Вариант: ' + variant
+    else:
+        return None
+
+
+def main(text):
+    result = []
+    not_parsed = 0
+    for i in range(len(text)):
+        rez = parse_subj(text[i])
+        if rez is not None:
+            result.append(rez)
+        else:
+            not_parsed += 1
+    return result, not_parsed
+
+
+print(main(['main.py', 'k17 14', 'K13 18', 'к02 1', 'ИВБО-11 Вариант№14',
+            'к02 21', '1.3.py', 'В 11 4', '\ufeff\u200b\u200bк20 21', 'B7 21',
+            'Фамилия Имя Задача 1.1', 'В03 12', 'к08 24', 'к07 23', '1.2.py, 1.3.py, 1.4.py',
+            '1.1.py', 'K14 23', 'в7 ', 'к6 ', '\u200b\u200bк20 21', 'к2 в3', 'В104', 'В1013',
+            'B3 29', 'v10 15', 'k13 30', 'В 7 10', 'Фамилия И.О. к7 31', '1.2.py', 'К10',
+            'ПитонН4 н11', 'K13 28', 'К4', 'K17 10', 'и4 11', 'Н1', 'н01 28', 'б3 5',
+            'Re: в6 28', 'к-11 3', '2_1.py, 2_2.py']))
