@@ -16,7 +16,7 @@ class Types(Enum):
     double = "d"
 
 
-class BinaryReader():
+class BinaryReader:
     def __init__(self, offset, source):
         self.offset = offset
         self.source = source
@@ -40,8 +40,10 @@ def a(reader: BinaryReader):
 def b(offset, source):
     reader = BinaryReader(offset, source)
     b1 = masser_b(2, reader)
-    b2 = (reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char) +
-          reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char)). \
+    b2 = (reader.read(Types.char) + reader.read(Types.char) +
+          reader.read(Types.char) + reader.read(Types.char) +
+          reader.read(Types.char) + reader.read(Types.char) +
+          reader.read(Types.char) + reader.read(Types.char)). \
         decode("ascii")
     b3 = reader.read(Types.double)
     reader.offset = reader.read(Types.uint32)
