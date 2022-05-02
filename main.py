@@ -40,8 +40,9 @@ def a(reader: BinaryReader):
 def b(offset, source):
     reader = BinaryReader(offset, source)
     b1 = masser_b(2, reader)
-    b2 = reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char) + \
-         reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char)
+    b2 = (reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char) +
+          reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char) + reader.read(Types.char)). \
+        decode("ascii")
     b3 = reader.read(Types.double)
     reader.offset = reader.read(Types.uint32)
     b4 = d(reader)
@@ -103,13 +104,6 @@ def masser_c(size, offset, source):
     return rez
 
 
-source = (b'KHTHX\x00Z\xdc\x83>\xf4\xf0V1\x8c\xfbOg\xdfQB\xf3U(_\xca\xe4\x10'
-          b'"\xc9\x0e\xc8+q\x1e_[G\xae\x0e?\xe6\x87\x19\x85}\x86Q\xc1{P^\xa9YN['
-          b'\xfc\xcd\xe4B\xad\xcb\xec\xb6\xc8-\x9faP\x91\\u\x84\x04\x00\x00'
-          b'\x00\x06\x00\x00\x00\x1a\xa3\xe7\x08\xd1YY\xf1\xd8\xba\xae2a\xbe\xbb'
-          b'\xab"\xbf"\x15\x94\xbe\x82\xe8\xf3jcdvdpwi?\x9a\xbe\xc1\xc4}\x89\x00\x00\x00'
-          b'\x00J')
-
-reader = BinaryReader(offset=5, source=source)
-g = a(reader)
-print(g)
+def main(source):
+    reader = BinaryReader(offset=5, source=source)
+    return a(reader)
