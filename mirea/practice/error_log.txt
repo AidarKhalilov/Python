@@ -1,0 +1,1 @@
+math domain error (<class 'ValueError'>, ValueError('math domain error'), <traceback object at 0x000002639BA37340>) - your error
