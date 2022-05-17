@@ -1,12 +1,20 @@
 import sys
-from importlib import reload
 import csv
-import math
-import pandas as pd
+import traceback
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random as rand
-from distutils.core import setup
+import math
+import math
+from math import pi
+
+
+print(pi)
+pi = 3.14
+print(pi)
+print(math.pi)
+
 
 # Задача 1. Приведите примеры кода, которые соответствуют нарушениям PEP 8:
 # 1. вызов функции foo ()
@@ -27,8 +35,6 @@ from distutils.core import setup
 # команды оператора импорта не приведет к перезагрузке модуля. Если вы хотите,
 # чтобы он был перезагружен, вам необходимо выполнить инструкцию reload.
 # print(sys.modules)
-math = reload(math)
-
 
 # Задача 3. GLOBAL VARIABLE относится только к одному пользователю
 
@@ -36,11 +42,9 @@ math = reload(math)
 # исключении (класс, сообщение, трассировка) в лог-файл.
 def delete(z):
     try:
-        x = math.log(z)
-        print(int("f"))
-        print(x)
+        math.log(z)
     except (ZeroDivisionError, ValueError) as e:
-        return run_with_log(e)
+        return get_exception_info(e)
 
 
 def run_with_log(func):
@@ -48,15 +52,27 @@ def run_with_log(func):
         f.write(f"{str(func)} {sys.exc_info()} - your error")
 
 
-# delete(-1) - выражение под логарифмом отрицательное.
+def get_exception_info(func) -> str:
+
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+
+    lines = traceback.format_exception(
+
+        exc_type, exc_value, exc_traceback)
+
+    log = "".join(line for line in lines)
+
+    with open('error_log.txt', 'w', -1, 'utf-8') as f:
+        f.write(log)
+
+
+delete(-1)
+
+
 # Задача 7. Реализуйте процедурную генерацию спрайтов 5x5 пикселей
 # с помощью Matplotlib и функции imshow.
 def square_gen():
-    square = [[0] * 5,
-              [0] * 5,
-              [0] * 5,
-              [0] * 5,
-              [0] * 5]
+    square = [[0 for column in range(5)] for row in range(5)]
     for i in range(5):
         for j in range(3):
             square[i][j] = rand.randint(0, 1)
@@ -75,7 +91,6 @@ def square_show(square):
 
 
 def main():
-    square_show(square_gen())
     fig, axes = plt.subplots(nrows=20, ncols=20)
     for ax in axes.flat:
         ax.imshow(square_show(square_gen()))
@@ -83,7 +98,7 @@ def main():
     plt.show()
 
 
-main()
+# main()
 
 
 # Задача 11. Проанализируйте базу данных старых компьютерных игр.
@@ -120,18 +135,14 @@ def games():
         if temple_str[1].strip('"') not in themes:
             themes.append(temple_str[1].strip('"'))
     data = {i: [0] * len(years) for i in sorted(themes)}
-    print(data)
     for i in mes:
         temple_str = ''.join(i).split(';')
         if temple_str[3].strip('"') != "не издана":
             data[temple_str[1].strip('"')][
                 years.index(int(temple_str[3].strip('"')))] += 1
-    print(years)
-    pd.DataFrame(data)
     for k, v in data.items():
         plt.plot(years, v, label=k)
     plt.legend(data, loc=2)
-    plt.title('Популярные жанры в различные периоды времени')
     plt.show()
 
 
