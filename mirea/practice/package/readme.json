@@ -1,0 +1,16 @@
+{
+  "users": {
+    "1": {
+      "userId": "1",
+      "displayname": "Fred"
+    },
+    "2": {
+      "userId": "2",
+      "displayname": "Ben"
+    },
+    "3": {
+      "userId": "3",
+      "displayname": "Sarah"
+    }
+  }
+}
