@@ -1,19 +1,14 @@
-import sys
 import csv
+import math
+import random as rand
+import sys
 import traceback
+from math import pi
+from my_module import *
+
 
 import matplotlib.pyplot as plt
 import numpy as np
-import random as rand
-import math
-import math
-from math import pi
-
-
-print(pi)
-pi = 3.14
-print(pi)
-print(math.pi)
 
 
 # Задача 1. Приведите примеры кода, которые соответствуют нарушениям PEP 8:
@@ -38,6 +33,17 @@ print(math.pi)
 
 # Задача 3. GLOBAL VARIABLE относится только к одному пользователю
 
+
+# Задача 4. Неконтролируемый импорт с помощью *, как известно, в Питоне не
+# поощряется. Попробуйте сделать его контролируемым со стороны модуля.
+# Чтобы использование звездочки приводило к импорту пользователю
+# только определенного круга имен вашего модуля.
+# На стороне модуля импорт звездочкой контролируется с помощью
+# переменной __all__, где можно задать какой круг имен нужно подключить
+# Пример в модуле my_module
+
+# Задача 5. Подготовить пакет к установке с помощью pip, package!
+
 # Задача 6. Напишите функцию, которая добавляет информацию о возникшем
 # исключении (класс, сообщение, трассировка) в лог-файл.
 def delete(z):
@@ -45,11 +51,6 @@ def delete(z):
         math.log(z)
     except (ZeroDivisionError, ValueError) as e:
         return get_exception_info(e)
-
-
-def run_with_log(func):
-    with open('error_log.txt', 'w', -1, 'utf-8') as f:
-        f.write(f"{str(func)} {sys.exc_info()} - your error")
 
 
 def get_exception_info(func) -> str:
